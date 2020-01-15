@@ -18,7 +18,8 @@
     <properties>
         <mainClass>io.helidon.microprofile.server.Main</mainClass>
         <docker.repo>helidonsockshop</docker.repo>
-        <docker.version>1.0.0</docker.version>
+        <docker.version>${project.version}</docker.version>
+        <jib.goal>dockerBuild</jib.goal>
     </properties>
 
     <dependencies>
@@ -43,45 +44,56 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>1.8.0</version>
-                <configuration>
-                    <to>
-                        <image>${docker.repo}/${project.artifactId}</image>
-                        <tags>
-                            <tag>${docker.version}</tag>
-                        </tags>
-                    </to>
-                    <container>
-                        <!-- good defaults intended for containers -->
-                        <jvmFlags>
-                            <jmxFlag>-server</jmxFlag>
-                            <jmxFlag>-Djava.awt.headless=true</jmxFlag>
-                            <jmxFlag>-XX:+UnlockExperimentalVMOptions</jmxFlag>
-                            <jmxFlag>-XX:+UseCGroupMemoryLimitForHeap</jmxFlag>
-                            <jmxFlag>-XX:InitialRAMFraction=2</jmxFlag>
-                            <jmxFlag>-XX:MinRAMFraction=2</jmxFlag>
-                            <jmxFlag>-XX:MaxRAMFraction=2</jmxFlag>
-                            <jmxFlag>-XX:+UseG1GC</jmxFlag>
-                        </jvmFlags>
-                        <mainClass>${mainClass}</mainClass>
-                        <ports>
-                            <port>7001</port>
-                        </ports>
-                    </container>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>1.8.0</version>
+                        <configuration>
+                            <to>
+                                <image>${docker.repo}/${project.artifactId}</image>
+                                <tags>
+                                    <tag>${docker.version}</tag>
+                                </tags>
+                            </to>
+                            <container>
+                                <!-- good defaults intended for containers -->
+                                <jvmFlags>
+                                    <jmxFlag>-server</jmxFlag>
+                                    <jmxFlag>-Djava.awt.headless=true</jmxFlag>
+                                    <jmxFlag>-XX:+UnlockExperimentalVMOptions</jmxFlag>
+                                    <jmxFlag>-XX:+UseCGroupMemoryLimitForHeap</jmxFlag>
+                                    <jmxFlag>-XX:InitialRAMFraction=2</jmxFlag>
+                                    <jmxFlag>-XX:MinRAMFraction=2</jmxFlag>
+                                    <jmxFlag>-XX:MaxRAMFraction=2</jmxFlag>
+                                    <jmxFlag>-XX:+UseG1GC</jmxFlag>
+                                </jvmFlags>
+                                <mainClass>${mainClass}</mainClass>
+                                <ports>
+                                    <port>7001</port>
+                                </ports>
+                            </container>
+                            <containerizingMode>packaged</containerizingMode>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>${jib.goal}</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
