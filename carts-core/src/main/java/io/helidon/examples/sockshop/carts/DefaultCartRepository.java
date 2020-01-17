@@ -10,7 +10,6 @@ import javax.enterprise.inject.Alternative;
 /**
  * Default in-memory implementation that can be used for testing.
  */
-@Alternative
 @ApplicationScoped
 public class DefaultCartRepository implements CartRepository {
     private Map<String, Cart> carts = new ConcurrentHashMap<>();

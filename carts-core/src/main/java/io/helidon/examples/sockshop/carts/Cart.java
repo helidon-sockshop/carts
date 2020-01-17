@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Cart implements Serializable {
     public String customerId; // Public instead of getters/setters.
-    private Map<String, Item> items = new LinkedHashMap<>();
+    public Map<String, Item> items = new LinkedHashMap<>();
 
     public Cart() {
         this(null);
@@ -61,7 +61,7 @@ public class Cart implements Serializable {
     public String toString() {
         return "Cart{" +
                 "customerId='" + customerId + '\'' +
-                ", items=" + items +
+                ", items=" + items() +
                 '}';
     }
 
