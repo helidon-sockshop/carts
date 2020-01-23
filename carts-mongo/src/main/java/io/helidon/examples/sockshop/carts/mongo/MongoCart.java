@@ -1,16 +1,17 @@
 package io.helidon.examples.sockshop.carts.mongo;
 
+import javax.json.bind.annotation.JsonbTransient;
+
 import io.helidon.examples.sockshop.carts.Cart;
 
-import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
 /**
  * @author Aleksandar Seovic  2020.01.16
  */
 public class MongoCart extends Cart {
-    @BsonId
-    public ObjectId id;
+    @JsonbTransient
+    public ObjectId _id;
 
     public MongoCart() {
     }
@@ -22,7 +23,7 @@ public class MongoCart extends Cart {
     @Override
     public String toString() {
         return "MongoCart{" +
-                "id=" + id +
+                "id=" + _id +
                 ", customerId='" + customerId + '\'' +
                 ", items=" + items() +
                 '}';
