@@ -1,90 +1,105 @@
 package io.helidon.examples.sockshop.carts;
 
 import java.io.Serializable;
-import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import lombok.Data;
+import lombok.ToString;
+
+/**
+ * Representation of a single item in a shopping cart.
+ */
+@Data
+@Entity
 public class Item implements Serializable {
+    /**
+     * The item identifier.
+     */
+    @Id
     private String itemId;
+
+    /**
+     * The item quantity.
+     */
     private int quantity;
+
+    /**
+     * The item's price per unit.
+     */
     private float unitPrice;
 
+    /**
+     * The cart this item belongs to, purely for JPA optimization.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private transient Cart cart;
+
+    /**
+     * Default constructor.
+     */
+    public Item() {
+    }
+
+    /**
+     * Construct an Item instance.
+     *
+     * @param itemId    the item identifier
+     * @param quantity  the item quantity
+     * @param unitPrice the item's price per unit
+     */
     public Item(String itemId, int quantity, float unitPrice) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
 
-    public Item() {
-        this("", 1, 0F);
+    /**
+     * Return the cart this item belongs to.
+     *
+     * @return the cart this item belongs to
+     */
+    Cart getCart() {
+        return cart;
     }
 
-    public Item(String itemId) {
-        this(itemId, 1, 0F);
+    /**
+     * Set the cart this item belongs to.
+     *
+     * @param cart the cart to set
+     *
+     * @return this item
+     */
+    Item setCart(Cart cart) {
+        this.cart = cart;
+        return this;
     }
 
-    public Item(Item item) {
-        this(item.itemId, item.quantity, item.unitPrice);
-    }
-
-    public Item(Item item, int quantity) {
-        this(item.itemId, quantity, item.unitPrice);
-    }
-
-    public String itemId() {
-        return itemId;
-    }
-
-    public int quantity() {
-        return quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "itemId='" + itemId + '\'' +
-                ", quantity=" + quantity +
-                ", unitPrice=" + unitPrice +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Item item = (Item) o;
-
-        return Objects.equals(itemId, item.itemId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(itemId);
-    }
-
-    // ****** Crappy getter/setters for Jackson JSON invoking ********
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
+    /**
+     * Set the item quantity.
+     *
+     * @param quantity the new quantity
+     *
+     * @return this item
+     */
+    public Item setQuantity(int quantity) {
         this.quantity = quantity;
+        return this;
     }
 
-    public float getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(float unitPrice) {
-        this.unitPrice = unitPrice;
+    /**
+     * Increment quantity in the cart by the specified number of items.
+     *
+     * @param count the number of items to increase quantity by
+     *
+     * @return this item
+     */
+    public Item incrementQuantity(int count) {
+        this.quantity += count;
+        return this;
     }
 }

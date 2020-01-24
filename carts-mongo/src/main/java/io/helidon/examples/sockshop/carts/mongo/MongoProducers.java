@@ -25,6 +25,10 @@ public class MongoProducers {
     @Produces
     @ApplicationScoped
     public static MongoClient client() {
+        return client("carts-db");
+    }
+
+    public static MongoClient client(String host) {
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                                                          fromProviders(PojoCodecProvider.builder()
                                                                                .automatic(true)
@@ -33,7 +37,7 @@ public class MongoProducers {
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applicationName("carts")
                 .applyToClusterSettings(
-                        builder -> builder.hosts(Collections.singletonList(new ServerAddress("carts-db", 27017))))
+                        builder -> builder.hosts(Collections.singletonList(new ServerAddress(host, 27017))))
                 .codecRegistry(pojoCodecRegistry)
                 .build();
         return MongoClients.create(settings);

@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
- * Implementation of Cart Service REST API.
+ * Implementation of the Cart Service REST API.
  */
 @ApplicationScoped
 @Path("/carts")

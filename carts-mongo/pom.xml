@@ -22,7 +22,13 @@
         <jib.goal>dockerBuild</jib.goal>
 
         <!-- dependencies -->
+        <lib.lombok.version>1.18.10</lib.lombok.version>
         <lib.mongodb.version>3.12.0</lib.mongodb.version>
+
+        <version.plugin.surefire>2.22.1</version.plugin.surefire>
+        <version.plugin.failsafe>2.22.1</version.plugin.failsafe>
+        <version.plugin.surefire.provider.junit>1.3.2</version.plugin.surefire.provider.junit>
+        <version.lib.junit>5.5.0</version.lib.junit>
     </properties>
 
     <dependencies>
@@ -31,6 +37,14 @@
             <groupId>io.helidon.examples.sockshop</groupId>
             <artifactId>carts-core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.helidon.examples.sockshop</groupId>
+            <artifactId>carts-core</artifactId>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Helidon dependencies-->
@@ -44,11 +58,53 @@
         </dependency>
 
         <!-- Mongo dependencies -->
-       <dependency>
-           <groupId>org.mongodb</groupId>
-           <artifactId>mongodb-driver-sync</artifactId>
-           <version>${lib.mongodb.version}</version>
-       </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>${lib.mongodb.version}</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lib.lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--JPA -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>2.2.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- test dependencies-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.2.0</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -60,6 +116,55 @@
                 <executions>
                     <execution>
                         <id>make-index</id>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.20.1</version>
+                <executions>
+                    <execution>
+                        <id>prepare-it-database</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>mongo:4.2.2</name>
+                                    <alias>carts-db</alias>
+                                    <run>
+                                        <ports>
+                                            <port>carts-db:27017</port>
+                                        </ports>
+                                        <wait>
+                                            <log>(?s)waiting for connections on port 27017
+                                            </log>
+                                            <time>10000</time>
+                                        </wait>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>remove-it-database</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

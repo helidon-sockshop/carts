@@ -22,24 +22,28 @@ import static com.mongodb.client.model.Filters.eq;
 public class MongoCartRepository extends DefaultCartRepository {
     private static final Logger LOGGER = Logger.getLogger(MongoCartRepository.class.getName());
 
-    @Inject
     private MongoCollection<MongoCart> carts;
 
+    @Inject
+    MongoCartRepository(MongoCollection<MongoCart> carts) {
+        this.carts = carts;
+    }
+
     @Override
-    public MongoCart getOrCreateCart(String cartId) {
-        MongoCart cart = carts.find(eq("customerId", cartId)).first();
+    public MongoCart getOrCreateCart(String customerId) {
+        MongoCart cart = carts.find(eq("customerId", customerId)).first();
         if (cart == null) {
-            LOGGER.info("Creating cart " + cartId);
-            cart = new MongoCart(cartId);
+            LOGGER.info("Creating cart " + customerId);
+            cart = new MongoCart(customerId);
             carts.insertOne(cart);
         }
         return cart;
     }
 
     @Override
-    public void deleteCart(String cartId) {
-        LOGGER.info("Deleting cart " + cartId);
-        carts.deleteOne(eq("customerId", cartId));
+    public void deleteCart(String customerId) {
+        LOGGER.info("Deleting cart " + customerId);
+        carts.deleteOne(eq("customerId", customerId));
     }
 
     @Override
@@ -57,7 +61,7 @@ public class MongoCartRepository extends DefaultCartRepository {
 
     @Override
     public List<Item> getItems(String cartId) {
-        return getOrCreateCart(cartId).items();
+        return getOrCreateCart(cartId).getItems();
     }
 
     @Override

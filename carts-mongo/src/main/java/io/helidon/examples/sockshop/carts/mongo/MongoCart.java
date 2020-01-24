@@ -19,13 +19,4 @@ public class MongoCart extends Cart {
     public MongoCart(String customerId) {
         super(customerId);
     }
-
-    @Override
-    public String toString() {
-        return "MongoCart{" +
-                "id=" + _id +
-                ", customerId='" + customerId + '\'' +
-                ", items=" + items() +
-                '}';
-    }
 }
