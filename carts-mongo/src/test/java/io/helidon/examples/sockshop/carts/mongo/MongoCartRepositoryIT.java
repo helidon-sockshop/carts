@@ -8,8 +8,11 @@ import static io.helidon.examples.sockshop.carts.mongo.MongoProducers.*;
 /**
  * Tests for Mongo repository implementation.
  */
-class MongoCartRepositoryTest extends CartRepositoryTest {
+class MongoCartRepositoryIT extends CartRepositoryTest {
     public CartRepository getCartRepository() {
-        return new MongoCartRepository(carts(db(client("localhost"))));
+        String host = System.getProperty("db.host","localhost");
+        int    port = Integer.parseInt(System.getProperty("db.port","27017"));
+
+        return new MongoCartRepository(carts(db(client(host, port))));
     }
 }

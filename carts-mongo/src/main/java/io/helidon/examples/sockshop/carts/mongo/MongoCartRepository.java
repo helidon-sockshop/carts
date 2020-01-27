@@ -3,38 +3,46 @@ package io.helidon.examples.sockshop.carts.mongo;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;
 
+import io.helidon.examples.sockshop.carts.Cart;
 import io.helidon.examples.sockshop.carts.DefaultCartRepository;
 import io.helidon.examples.sockshop.carts.Item;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 
 import static com.mongodb.client.model.Filters.eq;
 
 /**
- * @author Aleksandar Seovic  2020.01.16
+ * An implementation of {@link io.helidon.examples.sockshop.carts.CartRepository}
+ * that that uses MongoDB as a backend data store.
  */
 @ApplicationScoped
 @Specializes
 public class MongoCartRepository extends DefaultCartRepository {
-    private static final Logger LOGGER = Logger.getLogger(MongoCartRepository.class.getName());
 
-    private MongoCollection<MongoCart> carts;
+    private MongoCollection<Cart> carts;
 
     @Inject
-    MongoCartRepository(MongoCollection<MongoCart> carts) {
+    MongoCartRepository(MongoCollection<Cart> carts) {
         this.carts = carts;
     }
 
+    @PostConstruct
+    void configure() {
+        carts.createIndex(Indexes.hashed("customerId"));
+    }
+
     @Override
-    public MongoCart getOrCreateCart(String customerId) {
-        MongoCart cart = carts.find(eq("customerId", customerId)).first();
+    public Cart getOrCreateCart(String customerId) {
+        Cart cart = carts.find(eq("customerId", customerId)).first();
         if (cart == null) {
-            LOGGER.info("Creating cart " + customerId);
-            cart = new MongoCart(customerId);
+            cart = new Cart(customerId);
             carts.insertOne(cart);
         }
         return cart;
@@ -42,16 +50,14 @@ public class MongoCartRepository extends DefaultCartRepository {
 
     @Override
     public void deleteCart(String customerId) {
-        LOGGER.info("Deleting cart " + customerId);
         carts.deleteOne(eq("customerId", customerId));
     }
 
     @Override
     public boolean mergeCarts(String targetId, String sourceId) {
-        MongoCart source = carts.findOneAndDelete(eq("customerId", sourceId));
+        Cart source = carts.findOneAndDelete(eq("customerId", sourceId));
         if (source != null) {
-            LOGGER.info("Merging cart " + sourceId + " into " + targetId);
-            MongoCart target = getOrCreateCart(targetId);
+            Cart target = getOrCreateCart(targetId);
             target.merge(source);
             carts.replaceOne(eq("customerId", targetId), target);
             return true;
@@ -71,9 +77,8 @@ public class MongoCartRepository extends DefaultCartRepository {
 
     @Override
     public Item addItem(String cartId, Item item) {
-        MongoCart cart = getOrCreateCart(cartId);
+        Cart cart = getOrCreateCart(cartId);
 
-        LOGGER.info("Adding " + item + " to cart " + cartId);
         Item result = cart.add(item);
         carts.replaceOne(eq("customerId", cartId), cart);
         return result;
@@ -81,18 +86,16 @@ public class MongoCartRepository extends DefaultCartRepository {
 
     @Override
     public Item updateItem(String cartId, Item item) {
-        MongoCart cart = getOrCreateCart(cartId);
+        Cart cart = getOrCreateCart(cartId);
         Item result = cart.update(item);
-        LOGGER.info("Updating " + item + " in cart " + cartId);
         carts.replaceOne(eq("customerId", cartId), cart);
         return result;
     }
 
     @Override
     public void deleteItem(String cartId, String itemId) {
-        MongoCart cart = getOrCreateCart(cartId);
+        Cart cart = getOrCreateCart(cartId);
         cart.remove(itemId);
-        LOGGER.info("Removing item " + itemId + " from cart " + cartId);
         carts.replaceOne(eq("customerId", cartId), cart);
     }
 }
