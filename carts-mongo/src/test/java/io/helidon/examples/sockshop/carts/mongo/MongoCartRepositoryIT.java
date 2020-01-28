@@ -6,7 +6,7 @@ import io.helidon.examples.sockshop.carts.CartRepositoryTest;
 import static io.helidon.examples.sockshop.carts.mongo.MongoProducers.*;
 
 /**
- * Tests for Mongo repository implementation.
+ * Integration tests for {@link io.helidon.examples.sockshop.carts.mongo.MongoCartRepository}.
  */
 class MongoCartRepositoryIT extends CartRepositoryTest {
     public CartRepository getCartRepository() {

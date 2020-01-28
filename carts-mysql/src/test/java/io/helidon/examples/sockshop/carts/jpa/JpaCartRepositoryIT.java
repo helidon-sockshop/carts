@@ -7,7 +7,7 @@ import io.helidon.examples.sockshop.carts.CartRepository;
 import io.helidon.examples.sockshop.carts.CartRepositoryTest;
 
 /**
- * @author Aleksandar Seovic  2020.01.27
+ * Integration tests for {@link io.helidon.examples.sockshop.carts.jpa.JpaCartRepository}.
  */
 public class JpaCartRepositoryIT extends CartRepositoryTest {
 

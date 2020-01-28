@@ -7,7 +7,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 /**
- * @author Aleksandar Seovic  2020.01.24
+ * Abstract base class containing tests for all
+ * {@link io.helidon.examples.sockshop.carts.CartRepository} implementations.
  */
 public abstract class CartRepositoryTest {
 
