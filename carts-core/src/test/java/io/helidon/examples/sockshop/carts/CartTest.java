@@ -68,7 +68,6 @@ class CartTest {
         assertThat(cart.getItems(), hasSize(2));
 
         cart.remove("X1");
-        assertThat(x1.getCart(), nullValue());
         assertThat(cart.getItems(), hasSize(1));
         assertThat(cart.getItem("X1"), nullValue());
     }

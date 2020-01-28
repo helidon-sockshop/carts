@@ -20,6 +20,7 @@ The following data store implementations are provided:
 
 * In-Memory (in `carts-core`) 
 * MongoDB (in `carts-mongo`) 
+* MySQL/JPA (in `carts-mysql`) 
 
 ## API
 

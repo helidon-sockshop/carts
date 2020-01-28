@@ -2,12 +2,15 @@ package io.helidon.examples.sockshop.carts;
 
 import java.io.Serializable;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
@@ -15,6 +18,7 @@ import lombok.ToString;
  */
 @Data
 @Entity
+@IdClass(ItemId.class)
 public class Item implements Serializable {
     /**
      * The item identifier.
@@ -35,9 +39,12 @@ public class Item implements Serializable {
     /**
      * The cart this item belongs to, purely for JPA optimization.
      */
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private transient Cart cart;
+    @EqualsAndHashCode.Exclude
+    @JsonbTransient
+    private Cart cart;
 
     /**
      * Default constructor.
@@ -56,6 +63,20 @@ public class Item implements Serializable {
         this.itemId = itemId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+    }
+
+    /**
+     * Copy constructor.
+     * <p/>
+     * This constructor intentionally does not copy {@code carts} field,
+     * in order to detach the entity from the persistence context when
+     * merging carts.
+     * 
+     * @param item the item to initialize this item from
+     */
+    @SuppressWarnings("CopyConstructorMissesField")
+    public Item(Item item) {
+        this (item.itemId, item.quantity, item.unitPrice);
     }
 
     /**

@@ -60,6 +60,10 @@ public class Cart implements Serializable {
                 .orElse(null);
     }
 
+    public void setItems(List<Item> items) {
+        items.stream().map(item -> item.setCart(this)).forEach(this.items::add);
+    }
+    
     /**
      * Add specified item to this cart, or update quantity if present.
      * <p/>
@@ -111,7 +115,7 @@ public class Cart implements Serializable {
         Item item = getItem(itemId);
         if (item != null) {
             items.remove(item);
-            item.setCart(null);
+            //item.setCart(null);
         }
         return this;
     }
@@ -126,7 +130,7 @@ public class Cart implements Serializable {
      * @return this cart after the merge
      */
     public Cart merge(Cart other) {
-        other.getItems().forEach(this::add);
+        other.getItems().forEach(item -> add(new Item(item)));
         return this;
     }
 }

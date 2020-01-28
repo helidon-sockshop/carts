@@ -31,7 +31,7 @@ $ curl http://localhost:7001/carts/123
 which should return JSON response
 ```json
 {
-  "customerId": "123",
+  "customerId": "123"
 }
 ```
 

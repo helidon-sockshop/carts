@@ -1,0 +1,11 @@
+javax:
+    sql:
+        DataSource:
+            carts-db:
+                dataSourceClassName: com.mysql.cj.jdbc.MysqlDataSource
+                dataSource:
+                    serverName: carts-db
+                    port: 3306
+                    databaseName: carts
+                    user: carts
+                    password: pass
