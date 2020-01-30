@@ -16,6 +16,7 @@
         <module>carts-core</module>
         <module>carts-mongo</module>
         <module>carts-mysql</module>
+        <module>carts-redis</module>
     </modules>
 
 </project>

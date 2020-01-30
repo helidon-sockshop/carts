@@ -17,7 +17,23 @@ import javax.enterprise.inject.Alternative;
  */
 @ApplicationScoped
 public class DefaultCartRepository implements CartRepository {
-    private Map<String, Cart> carts = new ConcurrentHashMap<>();
+    protected Map<String, Cart> carts;
+
+    /**
+     * Construct {@code DefaultCartRepository} with empty storage map.
+     */
+    public DefaultCartRepository() {
+        this(new ConcurrentHashMap<>());
+    }
+
+    /**
+     * Construct {@code DefaultCartRepository} with the specified storage map.
+     *
+     * @param carts the storage map to use
+     */
+    protected DefaultCartRepository(Map<String, Cart> carts) {
+        this.carts = carts;
+    }
 
     @Override
     public Cart getOrCreateCart(String customerId) {
@@ -37,8 +53,14 @@ public class DefaultCartRepository implements CartRepository {
         }
 
         Cart target = getOrCreateCart(targetId);
-        target.merge(source);
+        saveCart(target.merge(source));
+
         return true;
+    }
+
+    @Override
+    public Item getItem(String cartId, String itemId) {
+        return getOrCreateCart(cartId).getItem(itemId);
     }
 
     @Override
@@ -48,21 +70,30 @@ public class DefaultCartRepository implements CartRepository {
 
     @Override
     public Item addItem(String cartId, Item item) {
-        return getOrCreateCart(cartId).add(item);
-    }
-
-    @Override
-    public Item getItem(String cartId, String itemId) {
-        return getOrCreateCart(cartId).getItem(itemId);
+        Cart cart = getOrCreateCart(cartId);
+        Item result = cart.add(item);
+        saveCart(cart);
+        return result;
     }
 
     @Override
     public Item updateItem(String cartId, Item item) {
-        return getOrCreateCart(cartId).update(item);
+        Cart cart = getOrCreateCart(cartId);
+        Item result = cart.update(item);
+        saveCart(cart);
+        return result;
     }
 
     @Override
     public void deleteItem(String cartId, String itemId) {
-        getOrCreateCart(cartId).remove(itemId);
+        Cart cart = getOrCreateCart(cartId);
+        cart.remove(itemId);
+        saveCart(cart);
+    }
+
+    // ---- helpers ---------------------------------------------------------
+
+    private void saveCart(Cart cart) {
+        carts.put(cart.getCustomerId(), cart);
     }
 }
