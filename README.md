@@ -9,20 +9,15 @@ in-memory implementation;
 2. **[carts-mongo](./carts-mongo)** contains the data repository implementation for MongoDB 
 backend
 
-## Architecture
+3. **[carts-mysql](./carts-mysql)** contains the data repository implementation for MySQL 
+backend (using JPA)
 
-TBD (add diagram)
-
-The service exposes REST API on port 7001, and allows for pluggable data store implementations
-via data repository abstraction. 
-
-The following data store implementations are provided:
-
-* In-Memory (in `carts-core`) 
-* MongoDB (in `carts-mongo`) 
-* MySQL/JPA (in `carts-mysql`) 
+4. **[carts-redis](./carts-redis)** contains the data repository implementation for Redis 
+backend (using Redisson client)
 
 ## API
+
+The service exposes REST API on port 7001. 
 
 TBD (add OpenAPI support/link)
 
