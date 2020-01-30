@@ -17,16 +17,20 @@ import static org.hamcrest.Matchers.*;
  * Integration tests for {@link io.helidon.examples.sockshop.carts.CartResource}.
  */
 public class CartResourceIT {
-    private static final Server server = Server.builder().port(0).build().start();
+    /**
+     * This will start the application on ephemeral port to avoid port conflicts.
+     * We can discover the actual port by calling {@link Server#port()} method afterwards.
+     */
+    private static final Server SERVER = Server.builder().port(0).build().start();
     private CartRepository carts;
 
     @BeforeEach
     void setup() {
+        // Configure RestAssured to run tests against our application
         RestAssured.baseURI = "http://localhost";
-        RestAssured.port = server.port();
-        //RestAssured.config = RestAssured.config().objectMapperConfig(new ObjectMapperConfig(ObjectMapperType.JSONB));
+        RestAssured.port = SERVER.port();
 
-        carts = server.cdiContainer().select(CartRepository.class).get();
+        carts = SERVER.cdiContainer().select(CartRepository.class).get();
         carts.deleteCart("C1");
         carts.deleteCart("C2");
     }
