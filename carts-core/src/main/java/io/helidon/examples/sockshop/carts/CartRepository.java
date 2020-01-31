@@ -12,7 +12,7 @@ public interface CartRepository {
      *
      * @param customerId the customer to get or create the cart for
      *
-     * @return an existing or a bewly created cart for the specified customer
+     * @return an existing or a newly created cart for the specified customer
      */
     Cart getOrCreateCart(String customerId);
 
