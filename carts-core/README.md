@@ -17,7 +17,7 @@ Because this implementation uses in-memory data store, it is trivial to run.
 Once you've built the Docker image per instructions above, you can simply run it by executing:
 
 ```bash
-$ docker run -p 7001:7001 helidonsockshop/carts-core
+$ docker run -p 7001:7001 helidon/sockshop/carts-core
 ``` 
 
 Once the container is up and running, you should be able to access [service API](../README.md#api) 

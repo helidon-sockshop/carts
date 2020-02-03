@@ -17,7 +17,7 @@
 
     <properties>
         <mainClass>io.helidon.microprofile.server.Main</mainClass>
-        <docker.repo>helidonsockshop</docker.repo>
+        <docker.repo>helidon/sockshop</docker.repo>
         <docker.version>${project.version}</docker.version>
         <jib.goal>dockerBuild</jib.goal>
 
