@@ -4,6 +4,7 @@ import io.helidon.microprofile.server.Server;
 
 import io.restassured.RestAssured;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,11 @@ public class CartResourceIT {
      */
     private static final Server SERVER = Server.builder().port(0).build().start();
     private CartRepository carts;
+
+    @AfterAll
+    static void stopServer() {
+        SERVER.stop();
+    }
 
     @BeforeEach
     void setup() {
