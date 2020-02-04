@@ -121,13 +121,13 @@ public class CartResourceIT {
     void testAddItem() {
         given().
                 contentType(JSON).
-                body(new Item("X1", 5, 10f)).
+                body(new Item("X1", 0, 10f)).
         when().
                 post("/carts/{cartId}/items", "C1").
         then().
                 statusCode(CREATED.getStatusCode()).
                 body("itemId", is("X1"),
-                     "quantity", is(5),
+                     "quantity", is(1),
                      "unitPrice", is(10f));
 
         // if we do it again the quantity should increase
@@ -139,7 +139,7 @@ public class CartResourceIT {
         then().
                 statusCode(CREATED.getStatusCode()).
                 body("itemId", is("X1"),
-                     "quantity", is(8),
+                     "quantity", is(4),
                      "unitPrice", is(10f));
     }
 

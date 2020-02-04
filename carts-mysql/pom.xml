@@ -104,13 +104,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--JPA -->
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- test dependencies-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
