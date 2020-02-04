@@ -38,6 +38,9 @@ public class ItemResource {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response addItem(Item item) {
+        if (item.getQuantity() == 0) {
+            item.setQuantity(1);
+        }
         Item result = carts.addItem(cartId, item);
         return Response
                 .status(Status.CREATED)

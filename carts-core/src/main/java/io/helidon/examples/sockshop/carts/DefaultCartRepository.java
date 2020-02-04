@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 
+import org.eclipse.microprofile.opentracing.Traced;
+
 /**
  * Simple in-memory implementation of {@link io.helidon.examples.sockshop.carts.CartRepository}
  * that can be used for demos and testing.
@@ -16,6 +18,7 @@ import javax.enterprise.inject.Alternative;
  * API testing and quick demos.
  */
 @ApplicationScoped
+@Traced
 public class DefaultCartRepository implements CartRepository {
     protected Map<String, Cart> carts;
 

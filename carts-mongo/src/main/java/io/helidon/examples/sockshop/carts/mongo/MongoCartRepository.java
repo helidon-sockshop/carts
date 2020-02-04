@@ -15,6 +15,7 @@ import io.helidon.examples.sockshop.carts.Item;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import org.eclipse.microprofile.opentracing.Traced;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -24,6 +25,7 @@ import static com.mongodb.client.model.Filters.eq;
  */
 @ApplicationScoped
 @Specializes
+@Traced
 public class MongoCartRepository extends DefaultCartRepository {
 
     private MongoCollection<Cart> carts;

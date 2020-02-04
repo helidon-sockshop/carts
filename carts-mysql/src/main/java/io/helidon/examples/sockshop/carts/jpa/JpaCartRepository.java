@@ -12,12 +12,15 @@ import io.helidon.examples.sockshop.carts.Cart;
 import io.helidon.examples.sockshop.carts.DefaultCartRepository;
 import io.helidon.examples.sockshop.carts.Item;
 
+import org.eclipse.microprofile.opentracing.Traced;
+
 /**
  * An implementation of {@link io.helidon.examples.sockshop.carts.CartRepository}
  * that that uses relational database (via JPA) as a backend data store.
  */
 @ApplicationScoped
 @Specializes
+@Traced
 public class JpaCartRepository extends DefaultCartRepository {
 
     @PersistenceContext
