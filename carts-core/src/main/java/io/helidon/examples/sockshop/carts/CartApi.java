@@ -8,10 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.media.Content;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
@@ -51,7 +48,7 @@ public interface CartApi {
     })
     Response mergeCarts(@Parameter(name = "customerId", description = "Customer identifier")
                         @PathParam("customerId") String customerId,
-                        @Parameter(name = "sessionId", description = "Anonymous session identifier")
+                        @Parameter(name = "sessionId", required = true, description = "Anonymous session identifier")
                         @QueryParam("sessionId") String sessionId);
 
     @Path("{customerId}/items")
