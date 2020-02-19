@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 /**
  * Representation of a single item in a shopping cart.
@@ -19,21 +20,25 @@ import lombok.ToString;
 @Data
 @Entity
 @IdClass(ItemId.class)
+@Schema(description = "Shopping cart item")
 public class Item implements Serializable {
     /**
      * The item identifier.
      */
     @Id
+    @Schema(description = "The item identifier")
     private String itemId;
 
     /**
      * The item quantity.
      */
+    @Schema(description = "The item quantity")
     private int quantity;
 
     /**
      * The item's price per unit.
      */
+    @Schema(description = "The item's price per unit")
     private float unitPrice;
 
     /**

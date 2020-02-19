@@ -16,24 +16,26 @@ import javax.ws.rs.core.Response.Status;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
- * @author Aleksandar Seovic  2019.08.20
+ * Implementation of Items sub-resource REST API.
  */
-public class ItemResource {
+public class ItemsResource implements ItemsApi {
 
     private final CartRepository carts;
     private final String cartId;
 
-    public ItemResource(CartRepository carts, String cartId) {
+    public ItemsResource(CartRepository carts, String cartId) {
         this.carts = carts;
         this.cartId = cartId;
     }
 
+    @Override
     @GET
     @Produces(APPLICATION_JSON)
     public List<Item> getItems() {
         return carts.getItems(cartId);
     }
 
+    @Override
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
@@ -48,13 +50,18 @@ public class ItemResource {
                 .build();
     }
 
+    @Override
     @GET
     @Path("{itemId}")
     @Produces(APPLICATION_JSON)
-    public Item getItem(@PathParam("itemId") String itemId) {
-        return carts.getItem(cartId, itemId);
+    public Response getItem(@PathParam("itemId") String itemId) {
+        Item item = carts.getItem(cartId, itemId);
+        return item == null
+                ? Response.status(Status.NOT_FOUND).build()
+                : Response.ok(item).build();
     }
 
+    @Override
     @DELETE
     @Path("{itemId}")
     public Response deleteItem(@PathParam("itemId") String itemId) {
@@ -62,6 +69,7 @@ public class ItemResource {
         return Response.accepted().build();
     }
 
+    @Override
     @PATCH
     @Consumes(APPLICATION_JSON)
     public Response updateItem(Item item) {

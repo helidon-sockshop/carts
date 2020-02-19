@@ -11,17 +11,20 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 /**
  * Shopping cart data model.
  */
 @Data
 @Entity
+@Schema(description = "Customer's shopping cart")
 public class Cart implements Serializable {
     /**
      * The ID of the customer this cart belongs to.
      */
     @Id
+    @Schema(description = "Customer identifier")
     private String customerId;
 
     /**
