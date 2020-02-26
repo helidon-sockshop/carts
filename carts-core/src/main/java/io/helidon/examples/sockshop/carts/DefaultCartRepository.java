@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 
 import org.eclipse.microprofile.opentracing.Traced;
+
+import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 /**
  * Simple in-memory implementation of {@link io.helidon.examples.sockshop.carts.CartRepository}
@@ -19,6 +22,7 @@ import org.eclipse.microprofile.opentracing.Traced;
  */
 @ApplicationScoped
 @Traced
+@Priority(APPLICATION - 10)
 public class DefaultCartRepository implements CartRepository {
     protected Map<String, Cart> carts;
 

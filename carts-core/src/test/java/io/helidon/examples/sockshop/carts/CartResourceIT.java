@@ -2,9 +2,11 @@ package io.helidon.examples.sockshop.carts;
 
 import io.helidon.microprofile.server.Server;
 
+import io.opentracing.util.GlobalTracer;
 import io.restassured.RestAssured;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,29 +24,33 @@ public class CartResourceIT {
      * This will start the application on ephemeral port to avoid port conflicts.
      * We can discover the actual port by calling {@link Server#port()} method afterwards.
      */
-    private static final Server SERVER = Server.builder().port(0).build().start();
+    public static final Server SERVER = Server.builder().port(0).build().start();
     private CartRepository carts;
-
-    @AfterAll
-    static void stopServer() {
-        SERVER.stop();
-    }
 
     @BeforeEach
     void setup() {
         // Configure RestAssured to run tests against our application
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = SERVER.port();
+        RestAssured.basePath = getBasePath();
 
-        carts = SERVER.cdiContainer().select(CartRepository.class).get();
+        carts = getCartsRepository();
         carts.deleteCart("C1");
         carts.deleteCart("C2");
+    }
+
+    protected String getBasePath() {
+        return "/carts";
+    }
+
+    protected CartRepository getCartsRepository() {
+        return SERVER.cdiContainer().select(CartRepository.class).get();
     }
 
     @Test
     void testGetCart() {
         when().
-                get("/carts/{cartId}", "C1").
+                get("/{cartId}", "C1").
         then().
                 statusCode(200).
                 body("customerId", equalTo("C1"),
@@ -54,7 +60,7 @@ public class CartResourceIT {
     @Test
     void testDeleteCart() {
         when().
-                delete("/carts/{cartId}", "C1").
+                delete("/{cartId}", "C1").
         then().
                 statusCode(ACCEPTED.getStatusCode());
     }
@@ -64,7 +70,7 @@ public class CartResourceIT {
         given().
                 queryParam("sessionId", "FOO").
         when().
-                get("/carts/{cartId}/merge", "C1").
+                get("/{cartId}/merge", "C1").
         then().
                 statusCode(NOT_FOUND.getStatusCode());
     }
@@ -80,7 +86,7 @@ public class CartResourceIT {
         given().
                 queryParam("sessionId", "C2").
         when().
-                get("/carts/{cartId}/merge", "C1").
+                get("/{cartId}/merge", "C1").
         then().
                 statusCode(ACCEPTED.getStatusCode());
 
@@ -91,7 +97,7 @@ public class CartResourceIT {
         given().
                 queryParam("sessionId", "C2").
         when().
-                get("/carts/{cartId}/merge", "C1").
+                get("/{cartId}/merge", "C1").
         then().
                 statusCode(NOT_FOUND.getStatusCode());
     }
@@ -100,7 +106,7 @@ public class CartResourceIT {
     void testGetItems() {
         // should be empty to start
         when().
-                get("/carts/{cartId}/items", "C1").
+                get("/{cartId}/items", "C1").
         then().
                 statusCode(OK.getStatusCode()).
                 body("$", empty());
@@ -111,7 +117,7 @@ public class CartResourceIT {
 
         // now it should return two items
         when().
-                get("/carts/{cartId}/items", "C1").
+                get("/{cartId}/items", "C1").
         then().
                 statusCode(OK.getStatusCode()).
                 body("itemId", hasItems("X1", "X2"));
@@ -123,7 +129,7 @@ public class CartResourceIT {
                 contentType(JSON).
                 body(new Item("X1", 0, 10f)).
         when().
-                post("/carts/{cartId}/items", "C1").
+                post("/{cartId}/items", "C1").
         then().
                 statusCode(CREATED.getStatusCode()).
                 body("itemId", is("X1"),
@@ -135,7 +141,7 @@ public class CartResourceIT {
                 contentType(JSON).
                 body(new Item("X1", 3, 10f)).
         when().
-                post("/carts/{cartId}/items", "C1").
+                post("/{cartId}/items", "C1").
         then().
                 statusCode(CREATED.getStatusCode()).
                 body("itemId", is("X1"),
@@ -149,7 +155,7 @@ public class CartResourceIT {
                 contentType(JSON).
                 body(new Item("X1", 5, 10f)).
         when().
-                patch("/carts/{cartId}/items", "C1").
+                patch("/{cartId}/items", "C1").
         then().
                 statusCode(ACCEPTED.getStatusCode());
 
@@ -160,7 +166,7 @@ public class CartResourceIT {
                 contentType(JSON).
                 body(new Item("X1", 3, 10f)).
         when().
-                patch("/carts/{cartId}/items", "C1").
+                patch("/{cartId}/items", "C1").
         then().
                 statusCode(ACCEPTED.getStatusCode());
 
@@ -174,7 +180,7 @@ public class CartResourceIT {
         carts.addItem("C1", new Item("X2", 3, 17f));
 
         when().
-                get("/carts/{cartId}/items/{itemId}", "C1", "X1").
+                get("/{cartId}/items/{itemId}", "C1", "X1").
         then().
                 statusCode(OK.getStatusCode()).
                 body("itemId", is("X1"),
@@ -189,7 +195,7 @@ public class CartResourceIT {
         carts.addItem("C1", new Item("X2", 3, 17f));
 
         when().
-                delete("/carts/{cartId}/items/{itemId}", "C1", "X1").
+                delete("/{cartId}/items/{itemId}", "C1", "X1").
         then().
                 statusCode(ACCEPTED.getStatusCode());
 

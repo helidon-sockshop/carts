@@ -35,7 +35,7 @@ public class CartResource implements CartApi {
     }
 
     @Override
-    public ItemsResource getItems(String customerId) {
+    public ItemsApi getItems(String customerId) {
         return new ItemsResource(carts, customerId);
     }
 }

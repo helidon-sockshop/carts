@@ -118,7 +118,6 @@ public class Cart implements Serializable {
         Item item = getItem(itemId);
         if (item != null) {
             items.remove(item);
-            //item.setCart(null);
         }
         return this;
     }

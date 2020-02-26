@@ -1,32 +1,34 @@
 package io.helidon.examples.sockshop.carts.mongo;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Specializes;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 
 import io.helidon.examples.sockshop.carts.Cart;
-import io.helidon.examples.sockshop.carts.DefaultCartRepository;
+import io.helidon.examples.sockshop.carts.CartRepository;
 import io.helidon.examples.sockshop.carts.Item;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+
 import org.eclipse.microprofile.opentracing.Traced;
 
 import static com.mongodb.client.model.Filters.eq;
+import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 /**
  * An implementation of {@link io.helidon.examples.sockshop.carts.CartRepository}
  * that that uses MongoDB as a backend data store.
  */
 @ApplicationScoped
-@Specializes
+@Alternative
+@Priority(APPLICATION)
 @Traced
-public class MongoCartRepository extends DefaultCartRepository {
+public class MongoCartRepository implements CartRepository {
 
     private MongoCollection<Cart> carts;
 

@@ -28,6 +28,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 /**
  * CDI support for MongoDB.
  */
+@SuppressWarnings("deprecation")
 @ApplicationScoped
 @Log
 public class MongoProducers {
@@ -62,6 +63,25 @@ public class MongoProducers {
     }
 
     /**
+     * CDI Producer for async {@code MongoClient}.
+     *
+     * @param config application configuration, which will be used to read
+     *               the values of a {@code db.host} and {@code db.port}
+     *               configuration properties, if present. If either is not
+     *               present, the defaults defined by the {@link #DEFAULT_HOST}
+     *               and {@link #DEFAULT_PORT} constants will be used.
+     *
+     * @return an async {@code MongoClient} instance
+     */
+    @Produces
+    @ApplicationScoped
+    public static com.mongodb.async.client.MongoClient asyncClient(Config config) {
+        Config carts = config.get("db");
+        return asyncClient(carts.get("host").asString().orElse(DEFAULT_HOST),
+                           carts.get("port").asInt().orElse(DEFAULT_PORT));
+    }
+
+    /**
      * CDI Producer for {@code MongoDatabase}.
      *
      * @param client the MongoDB client to use
@@ -71,6 +91,19 @@ public class MongoProducers {
     @Produces
     @ApplicationScoped
     public static MongoDatabase db(MongoClient client) {
+        return client.getDatabase("carts");
+    }
+
+    /**
+     * CDI Producer for async {@code MongoDatabase}.
+     *
+     * @param client the MongoDB client to use
+     *
+     * @return an async {@code MongoDatabase} instance
+     */
+    @Produces
+    @ApplicationScoped
+    public static com.mongodb.async.client.MongoDatabase asyncDb(com.mongodb.async.client.MongoClient client) {
         return client.getDatabase("carts");
     }
 
@@ -88,6 +121,20 @@ public class MongoProducers {
         return db.getCollection("carts", Cart.class);
     }
 
+    /**
+     * CDI Producer for the async {@code MongoCollection} that contains
+     * shopping carts.
+     *
+     * @param db the MongoDB database to use
+     *
+     * @return an async {@code MongoCollection} instance for the shopping carts
+     */
+    @Produces
+    @ApplicationScoped
+    public static com.mongodb.async.client.MongoCollection<Cart> asyncCarts(com.mongodb.async.client.MongoDatabase db) {
+        return db.getCollection("carts", Cart.class);
+    }
+
     // ---- helpers ---------------------------------------------------------
 
     /**
@@ -100,18 +147,44 @@ public class MongoProducers {
      */
     static MongoClient client(String host, int port) {
         log.info(format("Connecting to MongoDB on host %s:%d", host, port));
+        MongoClientSettings settings = createClientSettings(host, port);
+        return MongoClients.create(settings);
+    }
+
+    /**
+     * Create async {@code MongoClient} for the specified host and port.
+     *
+     * @param host the MongoDB host to connect to
+     * @param port the MongoDB port to connect to
+     *
+     * @return a {@code MongoClient} instance
+     */
+    static com.mongodb.async.client.MongoClient asyncClient(String host, int port) {
+        log.info(format("Connecting to MongoDB on host %s:%d using async client", host, port));
+        MongoClientSettings settings = createClientSettings(host, port);
+        return com.mongodb.async.client.MongoClients.create(settings);
+    }
+
+    /**
+     * Create client settings.
+     *
+     * @param host the MongoDB host to connect to
+     * @param port the MongoDB port to connect to
+     *
+     * @return a {@code MongoClientSettings} instance
+     */
+    static MongoClientSettings createClientSettings(String host, int port) {
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                                                          fromProviders(PojoCodecProvider.builder()
                                                                                .automatic(true)
                                                                                .conventions(Conventions.DEFAULT_CONVENTIONS)
                                                                                .build()));
-        MongoClientSettings settings = MongoClientSettings.builder()
+        return MongoClientSettings.builder()
                 .applicationName("carts")
                 .applyToClusterSettings(
                         builder -> builder.hosts(Collections.singletonList(new ServerAddress(host, port))))
                 .codecRegistry(pojoCodecRegistry)
                 .build();
-        return MongoClients.create(settings);
     }
 
 }
