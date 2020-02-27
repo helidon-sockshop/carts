@@ -18,5 +18,4 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DockerUser }}
         DOCKER_PASSWORD: ${{ secrets.DockerPassword }}
-      if: github.event == 'push'
       run: mvn package --file pom.xml -Pdocker -DskipTests -Ddocker.repo=helidonsockshop -Djib.goal=build -Djib.to.auth.username=$DOCKER_USER -Djib.to.auth.password=$DOCKER_PASSWORD
