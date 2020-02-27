@@ -14,5 +14,9 @@ jobs:
         java-version: '1.8'
     - name: Build with Maven
       run: mvn -B install --file pom.xml
-    - name: Push Docker images 
-      run: mvn package --file pom.xml -Pdocker -DskipTests -Ddocker.repo=helidonsockshop -Djib.goal=build
+    - name: Push Docker images
+      env:
+        DOCKER_USER: ${{ secrets.DockerUser }}
+        DOCKER_PASSWORD: ${{ secrets.DockerPassword }}
+      if: github.event == 'push'
+      run: mvn package --file pom.xml -Pdocker -DskipTests -Ddocker.repo=helidonsockshop -Djib.goal=build -Djib.to.auth.username=$DOCKER_USER -Djib.to.auth.password=$DOCKER_PASSWORD
