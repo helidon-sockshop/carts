@@ -22,7 +22,7 @@
         <jib.goal>dockerBuild</jib.goal>
 
         <!-- dependencies -->
-        <version.lib.redisson>3.12.0</version.lib.redisson>
+        <version.lib.redisson>3.12.3</version.lib.redisson>
         <version.lib.lombok>1.18.10</version.lib.lombok>
         <version.lib.junit>5.5.0</version.lib.junit>
         <version.lib.hamcrest>1.3</version.lib.hamcrest>
