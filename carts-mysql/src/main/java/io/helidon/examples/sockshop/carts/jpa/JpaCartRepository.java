@@ -2,26 +2,30 @@ package io.helidon.examples.sockshop.carts.jpa;
 
 import java.util.List;
 
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Specializes;
+import javax.enterprise.inject.Alternative;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import io.helidon.examples.sockshop.carts.Cart;
-import io.helidon.examples.sockshop.carts.DefaultCartRepository;
+import io.helidon.examples.sockshop.carts.CartRepository;
 import io.helidon.examples.sockshop.carts.Item;
 
 import org.eclipse.microprofile.opentracing.Traced;
+
+import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 /**
  * An implementation of {@link io.helidon.examples.sockshop.carts.CartRepository}
  * that that uses relational database (via JPA) as a backend data store.
  */
 @ApplicationScoped
-@Specializes
+@Alternative
+@Priority(APPLICATION)
 @Traced
-public class JpaCartRepository extends DefaultCartRepository {
+public class JpaCartRepository implements CartRepository {
 
     @PersistenceContext
     private EntityManager em;
