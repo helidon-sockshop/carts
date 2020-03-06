@@ -28,9 +28,6 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: mvn -B install --file pom.xml
-    - name: Push Docker images
-      env:
-        DOCKER_USER: ${{ secrets.DockerUser }}
-        DOCKER_PASSWORD: ${{ secrets.DockerPassword }}
-      run: mvn package --file pom.xml -Pdocker -DskipTests -Ddocker.repo=helidonsockshop -Djib.goal=build -Djib.to.auth.username=$DOCKER_USER -Djib.to.auth.password=$DOCKER_PASSWORD
+    - name: Push Docker images to GitHub Packages
+      run: mvn package --file pom.xml -Pdocker -DskipTests -Ddocker.repo=docker.pkg.github.com/${{ github.repository }} -Djib.goal=build -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }}
       if: github.event_name == 'push'
