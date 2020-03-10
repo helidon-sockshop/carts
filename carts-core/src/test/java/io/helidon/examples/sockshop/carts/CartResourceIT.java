@@ -20,12 +20,28 @@ import static org.hamcrest.Matchers.*;
  * Integration tests for {@link io.helidon.examples.sockshop.carts.CartResource}.
  */
 public class CartResourceIT {
+    protected static Server SERVER;
+
+    private CartRepository carts;
+
     /**
      * This will start the application on ephemeral port to avoid port conflicts.
-     * We can discover the actual port by calling {@link Server#port()} method afterwards.
+     * We can discover the actual port by calling {@link io.helidon.microprofile.server.Server#port()} method afterwards.
      */
-    public static final Server SERVER = Server.builder().port(0).build().start();
-    private CartRepository carts;
+    @BeforeAll
+    static void startServer() {
+        // disable global tracing so we can start server in multiple test suites
+        System.setProperty("tracing.global", "false");
+        SERVER = Server.builder().port(0).build().start();
+    }
+
+    /**
+     * Stop the server, as we cannot have multiple servers started at the same time.
+     */
+    @AfterAll
+    static void stopServer() {
+        SERVER.stop();
+    }
 
     @BeforeEach
     void setup() {
