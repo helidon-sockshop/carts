@@ -27,10 +27,10 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
-      run: mvn -B install --file pom.xml
+      run: mvn -B install --file pom.xml -DenableAssertions=false
     - name: Push images to DockerHub
       env:
         DOCKER_USER: ${{ secrets.DockerUser }}
         DOCKER_PASSWORD: ${{ secrets.DockerPassword }}
-      run: mvn package --file pom.xml -Pdocker -DskipTests -Ddocker.repo=helidonsockshop -Djib.goal=build -Djib.to.auth.username=$DOCKER_USER -Djib.to.auth.password=$DOCKER_PASSWORD
+      run: mvn package --file pom.xml -Pdocker -DenableAssertions=false -DskipTests -Ddocker.repo=helidonsockshop -Djib.goal=build -Djib.to.auth.username=$DOCKER_USER -Djib.to.auth.password=$DOCKER_PASSWORD
       if: github.event_name == 'push'
