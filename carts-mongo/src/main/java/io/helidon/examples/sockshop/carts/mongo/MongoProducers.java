@@ -186,5 +186,4 @@ public class MongoProducers {
                 .codecRegistry(pojoCodecRegistry)
                 .build();
     }
-
 }
