@@ -63,6 +63,11 @@ public class Cart implements Serializable {
                 .orElse(null);
     }
 
+    /**
+     * Set the items list.
+     *
+     * @param items the list of items
+     */
     public void setItems(List<Item> items) {
         items.stream().map(item -> item.setCart(this)).forEach(this.items::add);
     }
