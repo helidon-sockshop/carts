@@ -14,6 +14,7 @@
 
     <modules>
         <module>carts-core</module>
+        <module>carts-coherence</module>
         <module>carts-mongo</module>
         <module>carts-mysql</module>
         <module>carts-redis</module>
