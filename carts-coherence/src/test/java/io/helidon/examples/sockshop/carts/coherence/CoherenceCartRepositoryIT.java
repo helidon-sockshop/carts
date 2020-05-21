@@ -27,6 +27,6 @@ import com.tangosol.net.CacheFactory;
 class CoherenceCartRepositoryIT extends CartRepositoryTest {
     @Override
     protected CartRepository getCartRepository() {
-        return new TestCoherenceCartRepository(CacheFactory.getCache("carts"));
+        return new CoherenceCartRepository(CacheFactory.getCache("carts"));
     }
 }

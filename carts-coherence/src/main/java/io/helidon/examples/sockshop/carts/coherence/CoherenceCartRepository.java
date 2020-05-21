@@ -18,16 +18,16 @@ package io.helidon.examples.sockshop.carts.coherence;
 
 import io.helidon.examples.sockshop.carts.Cart;
 import io.helidon.examples.sockshop.carts.DefaultCartRepository;
-
 import io.helidon.examples.sockshop.carts.Item;
+
 import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
-
 import javax.inject.Inject;
 
 import com.oracle.coherence.cdi.Cache;
 import com.tangosol.net.NamedCache;
+
 import org.eclipse.microprofile.opentracing.Traced;
 
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
@@ -55,8 +55,19 @@ public class CoherenceCartRepository extends DefaultCartRepository {
     }
 
     @Override
-    public void deleteCart(String customerId) {
-        carts.remove(customerId);
+    public boolean mergeCarts(String targetId, String sourceId) {
+        final Cart source = carts.remove(sourceId);
+        if (source == null) {
+            return false;
+        }
+        
+        carts.invoke(targetId, entry -> {
+            Cart cart = entry.getValue(new Cart(entry.getKey()));
+            entry.setValue(cart.merge(source));
+            return null;
+        });
+
+        return true;
     }
 
     @Override
