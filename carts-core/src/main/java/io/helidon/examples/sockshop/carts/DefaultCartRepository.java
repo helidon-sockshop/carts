@@ -41,7 +41,7 @@ public class DefaultCartRepository implements CartRepository {
     protected DefaultCartRepository(Map<String, Cart> carts) {
         this.carts = carts;
     }
-
+    
     @Override
     public Cart getOrCreateCart(String customerId) {
         return carts.computeIfAbsent(customerId, Cart::new);
