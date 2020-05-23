@@ -75,6 +75,11 @@
             <artifactId>coherence-mp-metrics</artifactId>
             <version>${version.lib.coherence}</version>
         </dependency>
+        <dependency>
+            <groupId>com.oracle.coherence.ce</groupId>
+            <artifactId>coherence-mp-config</artifactId>
+            <version>${version.lib.coherence}</version>
+        </dependency>
 
         <!-- Lombok -->
         <dependency>
