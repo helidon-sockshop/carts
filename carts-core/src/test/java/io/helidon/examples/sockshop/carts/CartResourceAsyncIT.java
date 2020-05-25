@@ -5,7 +5,7 @@ package io.helidon.examples.sockshop.carts;
  */
 public class CartResourceAsyncIT extends CartResourceIT {
     protected String getBasePath() {
-        return "/carts/async";
+        return "/carts-async";
     }
 
     protected CartRepository getCartsRepository() {

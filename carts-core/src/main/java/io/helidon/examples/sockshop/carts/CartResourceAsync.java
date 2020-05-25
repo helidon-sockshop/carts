@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
  * Implementation of the Cart Service REST API.
  */
 @ApplicationScoped
-@Path("/carts/async")
+@Path("/carts-async")
 public class CartResourceAsync implements CartApiAsync {
 
     @Inject
