@@ -46,6 +46,7 @@
         <version.plugin.surefire>2.22.2</version.plugin.surefire>
         <version.plugin.failsafe>2.22.2</version.plugin.failsafe>
         <version.plugin.surefire.provider.junit>1.3.2</version.plugin.surefire.provider.junit>
+        <version.plugin.jib>2.3.0</version.plugin.jib>
     </properties>
 
     <dependencies>
@@ -201,8 +202,11 @@
                     <plugin>
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
-                        <version>1.8.0</version>
+                        <version>${version.plugin.jib}</version>
                         <configuration>
+                            <from>
+                                <image>gcr.io/distroless/java@sha256:f59b26c5ecc735514a38afbf845214383c4e2ba1fdd15a76225339b8ab7da8ef</image>
+                            </from>
                             <to>
                                 <image>${docker.repo}/${project.artifactId}</image>
                                 <tags>
