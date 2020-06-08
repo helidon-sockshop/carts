@@ -19,7 +19,7 @@ package io.helidon.examples.sockshop.carts.coherence;
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
 import com.oracle.coherence.cdi.Name;
-import com.tangosol.net.AsyncNamedCache;
+import com.tangosol.net.AsyncNamedMap;
 
 import io.helidon.examples.sockshop.carts.Cart;
 import io.helidon.examples.sockshop.carts.CartRepositoryAsync;
@@ -45,10 +45,10 @@ import org.eclipse.microprofile.opentracing.Traced;
 @Priority(APPLICATION)
 @Traced
 public class CoherenceCartRepositoryAsync implements CartRepositoryAsync {
-    protected final AsyncNamedCache<String, Cart> carts;
+    protected final AsyncNamedMap<String, Cart> carts;
 
     @Inject
-    CoherenceCartRepositoryAsync(@Name("carts") AsyncNamedCache<String, Cart> carts) {
+    CoherenceCartRepositoryAsync(@Name("carts") AsyncNamedMap<String, Cart> carts) {
         this.carts = carts;
     }
 
