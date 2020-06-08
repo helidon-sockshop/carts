@@ -18,7 +18,7 @@ package io.helidon.examples.sockshop.carts.coherence;
 
 import com.tangosol.net.CacheFactory;
 
-import com.tangosol.net.NamedCache;
+import com.tangosol.net.NamedMap;
 import io.helidon.examples.sockshop.carts.Cart;
 import io.helidon.examples.sockshop.carts.CartRepository;
 import io.helidon.examples.sockshop.carts.CartRepositoryTest;
@@ -32,7 +32,7 @@ import static com.tangosol.net.cache.TypeAssertion.withTypes;
 class CoherenceCartRepositoryAsyncIT extends CartRepositoryTest {
     @Override
     protected CartRepository getCartRepository() {
-        NamedCache<String, Cart> carts = CacheFactory.getCache("carts", withTypes(String.class, Cart.class));
+        NamedMap<String, Cart> carts = CacheFactory.getCache("carts", withTypes(String.class, Cart.class));
         return new SyncCartRepository(new CoherenceCartRepositoryAsync(carts.async()));
     }
 }

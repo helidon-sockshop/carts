@@ -18,7 +18,7 @@ package io.helidon.examples.sockshop.carts.coherence;
 
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
-import com.oracle.coherence.cdi.Cache;
+import com.oracle.coherence.cdi.Name;
 import com.tangosol.net.AsyncNamedCache;
 
 import io.helidon.examples.sockshop.carts.Cart;
@@ -48,7 +48,7 @@ public class CoherenceCartRepositoryAsync implements CartRepositoryAsync {
     protected final AsyncNamedCache<String, Cart> carts;
 
     @Inject
-    CoherenceCartRepositoryAsync(@Cache("carts") AsyncNamedCache<String, Cart> carts) {
+    CoherenceCartRepositoryAsync(@Name("carts") AsyncNamedCache<String, Cart> carts) {
         this.carts = carts;
     }
 

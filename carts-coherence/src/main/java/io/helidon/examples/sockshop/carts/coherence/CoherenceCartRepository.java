@@ -25,8 +25,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 
-import com.oracle.coherence.cdi.Cache;
-import com.tangosol.net.NamedCache;
+import com.oracle.coherence.cdi.Name;
+import com.tangosol.net.NamedMap;
 
 import org.eclipse.microprofile.opentracing.Traced;
 
@@ -41,10 +41,10 @@ import static javax.interceptor.Interceptor.Priority.APPLICATION;
 @Priority(APPLICATION)
 @Traced
 public class CoherenceCartRepository extends DefaultCartRepository {
-    protected final NamedCache<String, Cart> carts;
+    protected final NamedMap<String, Cart> carts;
 
     @Inject
-    CoherenceCartRepository(@Cache("carts") NamedCache<String, Cart> carts) {
+    CoherenceCartRepository(@Name("carts") NamedMap<String, Cart> carts) {
         super(carts);
         this.carts = carts;
     }
