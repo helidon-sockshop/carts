@@ -192,6 +192,7 @@
                                 <ports>
                                     <port>7001</port>
                                 </ports>
+                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                             </container>
                             <containerizingMode>packaged</containerizingMode>
                         </configuration>
