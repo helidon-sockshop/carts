@@ -7,6 +7,8 @@
 
 package io.helidon.examples.sockshop.carts;
 
+import javax.enterprise.inject.spi.CDI;
+
 /**
  * Integration tests for {@link io.helidon.examples.sockshop.carts.CartResourceAsync}.
  */
@@ -16,6 +18,6 @@ public class CartResourceAsyncIT extends CartResourceIT {
     }
 
     protected CartRepository getCartsRepository() {
-        return new SyncCartRepository(SERVER.cdiContainer().select(CartRepositoryAsync.class).get());
+        return new SyncCartRepository(CDI.current().select(CartRepositoryAsync.class).get());
     }
 }

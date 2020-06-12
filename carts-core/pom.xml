@@ -14,7 +14,7 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-mp</artifactId>
-        <version>1.4.5-SNAPSHOT</version>
+        <version>2.0.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -32,7 +32,6 @@
         <version.lib.junit>5.6.2</version.lib.junit>
         <version.lib.hamcrest>2.2</version.lib.hamcrest>
         <version.lib.rest-assured>4.3.0</version.lib.rest-assured>
-        <version.lib.smallrye-openapi>1.1.20</version.lib.smallrye-openapi>
         <version.plugin.surefire>2.22.2</version.plugin.surefire>
         <version.plugin.failsafe>2.22.2</version.plugin.failsafe>
         <version.plugin.surefire.provider.junit>1.3.2</version.plugin.surefire.provider.junit>
@@ -64,11 +63,7 @@
             <artifactId>jakarta.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.smallrye</groupId>
-            <artifactId>smallrye-open-api</artifactId>
-            <version>${version.lib.smallrye-openapi}</version>
-        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -144,7 +139,7 @@
                         <version>${version.plugin.jib}</version>
                         <configuration>
                             <from>
-                                <image>gcr.io/distroless/java@sha256:f59b26c5ecc735514a38afbf845214383c4e2ba1fdd15a76225339b8ab7da8ef</image>
+                                <image>gcr.io/distroless/java@sha256:9d4092ba5e1c9dc4d1490fdead1dd7ea5c64e635b729fee11a6af55f51b337f8</image>
                             </from>
                             <to>
                                 <image>${docker.repo}/${project.artifactId}</image>

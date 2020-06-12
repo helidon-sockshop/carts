@@ -7,6 +7,8 @@
 
 package io.helidon.examples.sockshop.carts.jpa;
 
+import javax.enterprise.inject.spi.CDI;
+
 import io.helidon.examples.sockshop.carts.CartRepository;
 import io.helidon.examples.sockshop.carts.CartRepositoryTest;
 import io.helidon.microprofile.server.Server;
@@ -41,6 +43,6 @@ public class JpaCartRepositoryIT extends CartRepositoryTest {
 
     @Override
     protected CartRepository getCartRepository() {
-        return SERVER.cdiContainer().select(CartRepository.class).get();
+        return CDI.current().select(CartRepository.class).get();
     }
 }

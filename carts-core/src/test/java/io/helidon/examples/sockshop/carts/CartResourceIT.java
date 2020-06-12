@@ -7,9 +7,10 @@
 
 package io.helidon.examples.sockshop.carts;
 
+import javax.enterprise.inject.spi.CDI;
+
 import io.helidon.microprofile.server.Server;
 
-import io.opentracing.util.GlobalTracer;
 import io.restassured.RestAssured;
 
 import org.junit.jupiter.api.AfterAll;
@@ -67,7 +68,7 @@ public class CartResourceIT {
     }
 
     protected CartRepository getCartsRepository() {
-        return SERVER.cdiContainer().select(CartRepository.class).get();
+        return CDI.current().select(CartRepository.class).get();
     }
 
     @Test

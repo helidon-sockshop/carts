@@ -7,6 +7,8 @@
 
 package io.helidon.examples.sockshop.carts.coherence;
 
+import javax.enterprise.inject.spi.CDI;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -44,7 +46,7 @@ class CoherenceCartRepositoryAsyncIT extends CartRepositoryTest {
 
     @Override
     protected CartRepository getCartRepository() {
-        CartRepositoryAsync cartsAsync = SERVER.cdiContainer().select(CartRepositoryAsync.class).get();
+        CartRepositoryAsync cartsAsync = CDI.current().select(CartRepositoryAsync.class).get();
         return new SyncCartRepository(cartsAsync);
     }
 }
