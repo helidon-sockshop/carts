@@ -3,10 +3,10 @@ name: Java CI
 on:
   push:
     branches:
-      - master
+      - helidon-1.x
   pull_request:
     branches:
-      - master
+      - helidon-1.x
   release:
     types:
       - created
