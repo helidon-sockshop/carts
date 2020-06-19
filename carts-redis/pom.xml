@@ -207,16 +207,15 @@
                             <container>
                                 <!-- good defaults intended for containers -->
                                 <jvmFlags>
-                                    <jmxFlag>-server</jmxFlag>
-                                    <jmxFlag>-Djava.awt.headless=true</jmxFlag>
-                                    <jmxFlag>-XX:+UnlockExperimentalVMOptions</jmxFlag>
-                                    <jmxFlag>-XX:+UseCGroupMemoryLimitForHeap</jmxFlag>
-                                    <jmxFlag>-XX:InitialRAMFraction=2</jmxFlag>
-                                    <jmxFlag>-XX:MinRAMFraction=2</jmxFlag>
-                                    <jmxFlag>-XX:MaxRAMFraction=2</jmxFlag>
-                                    <jmxFlag>-XX:+UseG1GC</jmxFlag>
+                                    <jvmFlag>-server</jvmFlag>
+                                    <jvmFlag>-Djava.awt.headless=true</jvmFlag>
+                                    <jvmFlag>-XshowSettings:all</jvmFlag>
+                                    <jvmFlag>-XX:+PrintCommandLineFlags</jvmFlag>
+                                    <jvmFlag>-XX:+UnlockDiagnosticVMOptions</jvmFlag>
+                                    <jvmFlag>-XX:InitialRAMPercentage=70</jvmFlag>
+                                    <jvmFlag>-XX:MinRAMPercentage=70</jvmFlag>
+                                    <jvmFlag>-XX:MaxRAMPercentage=70</jvmFlag>
                                 </jvmFlags>
-                                <mainClass>${mainClass}</mainClass>
                                 <ports>
                                     <port>7001</port>
                                 </ports>

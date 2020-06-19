@@ -44,8 +44,8 @@
             <artifactId>helidon-microprofile</artifactId>
         </dependency>
         <dependency>
-          <groupId>io.helidon.tracing</groupId>
-          <artifactId>helidon-tracing-jaeger</artifactId>
+            <groupId>io.helidon.tracing</groupId>
+            <artifactId>helidon-tracing-jaeger</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
@@ -139,7 +139,9 @@
                         <version>${version.plugin.jib}</version>
                         <configuration>
                             <from>
-                                <image>gcr.io/distroless/java@sha256:9d4092ba5e1c9dc4d1490fdead1dd7ea5c64e635b729fee11a6af55f51b337f8</image>
+                                <image>
+                                    gcr.io/distroless/java@sha256:9d4092ba5e1c9dc4d1490fdead1dd7ea5c64e635b729fee11a6af55f51b337f8
+                                </image>
                             </from>
                             <to>
                                 <image>${docker.repo}/${project.artifactId}</image>
@@ -150,16 +152,15 @@
                             <container>
                                 <!-- good defaults intended for containers -->
                                 <jvmFlags>
-                                    <jmxFlag>-server</jmxFlag>
-                                    <jmxFlag>-Djava.awt.headless=true</jmxFlag>
-                                    <jmxFlag>-XX:+UnlockExperimentalVMOptions</jmxFlag>
-                                    <jmxFlag>-XX:+UseCGroupMemoryLimitForHeap</jmxFlag>
-                                    <jmxFlag>-XX:InitialRAMFraction=2</jmxFlag>
-                                    <jmxFlag>-XX:MinRAMFraction=2</jmxFlag>
-                                    <jmxFlag>-XX:MaxRAMFraction=2</jmxFlag>
-                                    <jmxFlag>-XX:+UseG1GC</jmxFlag>
+                                    <jvmFlag>-server</jvmFlag>
+                                    <jvmFlag>-Djava.awt.headless=true</jvmFlag>
+                                    <jvmFlag>-XshowSettings:all</jvmFlag>
+                                    <jvmFlag>-XX:+PrintCommandLineFlags</jvmFlag>
+                                    <jvmFlag>-XX:+UnlockDiagnosticVMOptions</jvmFlag>
+                                    <jvmFlag>-XX:InitialRAMPercentage=70</jvmFlag>
+                                    <jvmFlag>-XX:MinRAMPercentage=70</jvmFlag>
+                                    <jvmFlag>-XX:MaxRAMPercentage=70</jvmFlag>
                                 </jvmFlags>
-                                <mainClass>${mainClass}</mainClass>
                                 <ports>
                                     <port>7001</port>
                                 </ports>
