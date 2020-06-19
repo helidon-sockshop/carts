@@ -14,7 +14,7 @@
     <groupId>io.helidon.examples.sockshop</groupId>
     <artifactId>carts</artifactId>
     <packaging>pom</packaging>
-    <version>1.4.5-SNAPSHOT</version>
+    <version>1.4.5</version>
 
     <name>${project.artifactId}</name>
     <description>Shopping Cart service for Helidon Sock Shop demo application</description>
