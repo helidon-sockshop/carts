@@ -74,7 +74,7 @@
         </dependency>
         <dependency>
             <groupId>com.oracle.coherence.ce</groupId>
-            <artifactId>coherence-cdi</artifactId>
+            <artifactId>coherence-cdi-server</artifactId>
             <version>${version.lib.coherence}</version>
         </dependency>
         <dependency>
