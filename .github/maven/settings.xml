@@ -47,6 +47,7 @@
         </pluginRepository>
       </pluginRepositories>
     </profile>
+
     <profile>
       <id>ossrh-staging</id>
       <repositories>
