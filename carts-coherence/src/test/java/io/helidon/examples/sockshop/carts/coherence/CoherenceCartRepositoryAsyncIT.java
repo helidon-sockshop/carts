@@ -7,8 +7,6 @@
 
 package io.helidon.examples.sockshop.carts.coherence;
 
-import com.tangosol.net.Coherence;
-
 import javax.enterprise.inject.spi.CDI;
 
 import org.junit.jupiter.api.AfterAll;
@@ -44,7 +42,6 @@ class CoherenceCartRepositoryAsyncIT extends CartRepositoryTest {
     @AfterAll
     static void stopServer() {
         SERVER.stop();
-        Coherence.closeAll();
     }
 
     @Override
