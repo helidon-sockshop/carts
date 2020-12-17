@@ -7,6 +7,8 @@
 
 package io.helidon.examples.sockshop.carts.coherence;
 
+import com.tangosol.net.Coherence;
+
 import javax.enterprise.inject.spi.CDI;
 
 import io.helidon.examples.sockshop.carts.CartRepository;
@@ -39,6 +41,7 @@ class CoherenceCartRepositoryIT extends CartRepositoryTest {
     @AfterAll
     static void stopServer() {
         SERVER.stop();
+        Coherence.closeAll();
     }
     
     @Override
