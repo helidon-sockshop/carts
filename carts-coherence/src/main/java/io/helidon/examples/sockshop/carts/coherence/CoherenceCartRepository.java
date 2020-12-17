@@ -16,7 +16,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 
-import com.oracle.coherence.cdi.Name;
+import com.oracle.coherence.inject.Name;
 import com.tangosol.net.NamedMap;
 
 import org.eclipse.microprofile.opentracing.Traced;
