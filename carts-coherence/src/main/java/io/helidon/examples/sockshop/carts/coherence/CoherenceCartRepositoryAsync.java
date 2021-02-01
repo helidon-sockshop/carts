@@ -9,7 +9,7 @@ package io.helidon.examples.sockshop.carts.coherence;
 
 import static javax.interceptor.Interceptor.Priority.APPLICATION;
 
-import com.oracle.coherence.inject.Name;
+import com.oracle.coherence.cdi.Name;
 import com.tangosol.net.AsyncNamedMap;
 
 import io.helidon.examples.sockshop.carts.Cart;
