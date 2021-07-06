@@ -129,6 +129,6 @@ public class RedisCartRepositoryAsync implements CartRepositoryAsync {
         return getOrCreateCart(cartId)
                 .thenApply(cart -> cart.remove(itemId))
                 .thenApply(cart -> carts.fastPutAsync(cartId, cart))
-                .thenAccept(future -> future.thenAccept(aBoolean -> {}));
+                .thenCompose(future -> future.thenAccept(aBoolean -> {}));
     }
 }
